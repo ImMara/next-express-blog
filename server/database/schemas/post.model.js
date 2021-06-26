@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
-const schema = mongoose.Schema;
 
-const postSchema = schema({
+const {Schema} = mongoose;
+mongoose.Promise = global.Promise;
+
+const postSchema = Schema({
 
     title: {
         type: String,
@@ -15,5 +17,20 @@ const postSchema = schema({
 
 })
 
-const post = mongoose.model('post', postSchema)
-module.exports = post;
+let Post;
+function modelAreadyDeclared () {
+    try {
+        mongoose.model('post')  // it throws an error if the model is still not defined
+        return true
+    } catch (e) {
+        return false
+    }
+}
+
+if (!modelAreadyDeclared()) {
+    Post = mongoose.model('post', postSchema)
+}else{
+    Post = mongoose.model('post')
+}
+
+module.exports = Post ;
