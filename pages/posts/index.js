@@ -22,6 +22,10 @@ function Index(props) {
         setData([...data,body])
     }
 
+    const deletePost = (id)=>{
+        axios.delete(`http://localhost:3000/api/post/`+id).then(r=>console.log(r))
+    }
+
     return (
         <>
             <div>
@@ -34,13 +38,14 @@ function Index(props) {
                     <>
                         <h1>{post.title}</h1>
                         <p>{post.description}</p>
+                        <div onClick={deletePost(post._id)}>x</div>
                     </>
                 ))}
             </div>
         </>
     );
 }
-Index.getInitialProps = async ()=>{
+Index.getInitialProps = async () =>{
     const posts = await findAllPost()
     return {posts}
 }
